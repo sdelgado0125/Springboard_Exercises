@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie App</title>
+</head>
+<body>
+    <h1> Movie Rating</h1>
+
+    <form id="movieForm">
+        <label for="titleInput">Movie Title:</label>
+        <input type="text" id="titleInput" required minlength="2">
+        <label for="ratingInput">Rating 1 - 10:</label>
+        <input type="text" id="ratingInput" required min="0" required max="10">
+        <button type="submit"> Submit Movie</button>
+    </form>
+    <div id="moviesList"></div>
+
+    <script>
+ $(document).ready(function(){
+      function createMovieEntry(title, rating) {
+        var movieEntry = $('<div class="movieEntry"></div>');
+        var titleElement = $('<p>Title: ' + title + '</p>');
+        var ratingElement = $('<p>Rating: ' + rating + '</p>');
+        var removeButton = $('<button class="removeBtn">Remove</button>');
+        movieEntry.append(titleElement, ratingElement, removeButton);
+        return movieEntry;
+      }
+
+      function validateInputs(title, rating) {
+        return title.length >= 2 && rating >= 0 && rating <= 10;
+      }
+
+      $('#movieForm').submit(function(event){
+        event.preventDefault();
+        var title = $('#titleInput').val();
+        var rating = $('#ratingInput').val();
+
+        if (validateInputs(title, rating)) {
+          $('#moviesList').append(createMovieEntry(title, rating));
+          $('#titleInput, #ratingInput').val('');
+        } else {
+          alert('Please enter a title with at least 2 characters and a rating between 0 and 10.');
+        }
+      });
+
+      $(document).on('click', '.removeBtn', function(){
+        $(this).parent('.movieEntry').remove();
+      });
+
+      function sortMovies(selector, comparator) {
+        var movies = $('#moviesList .movieEntry').get();
+        movies.sort(comparator);
+        $('#moviesList').empty().append(movies);
+      }
+
+      $('#sortTitleAsc').click(function(){
+        sortMovies('.movieEntry', function(a, b) {
+          var titleA = $(a).find('p:eq(0)').text().toUpperCase();
+          var titleB = $(b).find('p:eq(0)').text().toUpperCase();
+          return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+        });
+      });
+    });
+    </script>
+    
+</body>
+</html>

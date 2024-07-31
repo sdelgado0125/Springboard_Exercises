@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Pet</title>
+</head>
+<body>
+    <h1>Edit Pet: {{ pet.name }}</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.photo_url.label }}<br>
+            {{ form.photo_url() }}<br>
+            {% for error in form.photo_url.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.notes.label }}<br>
+            {{ form.notes() }}<br>
+            {% for error in form.notes.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.available.label }}<br>
+            {{ form.available() }}<br>
+            {% for error in form.available.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p><input type="submit" value="Update Pet"></p>
+    </form>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>
